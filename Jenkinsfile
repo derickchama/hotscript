@@ -3,6 +3,10 @@ pipeline {
     tools { 
       maven 'M2_HOME'
     }
+    environment {
+       registry = "derickch/opona/mino_lik"
+       registryCredential = 'dockerid'
+    }
     stages {
         stage('Build') { 
             steps {
@@ -19,7 +23,8 @@ pipeline {
         }
         stage('Deploy') { 
             steps {
-              echo "hello deploy"
+              script {
+              dockerImage = docker.build registry + ":$BUILD_NUMBER"
             }
         }
     }
